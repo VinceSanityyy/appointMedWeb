@@ -1,6 +1,6 @@
 <template>
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar elevation-4 sidebar-light-teal">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img
@@ -31,7 +31,7 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul
-          class="nav nav-pills nav-sidebar flex-column"
+          class="nav nav-pills nav-sidebar flex-column text-sm"
           data-widget="treeview"
           role="menu"
           data-accordion="false"
