@@ -38,7 +38,9 @@ export default {
       { src: '/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js', body: true },
       { src: '/plugins/summernote/summernote-bs4.min.js', body: true },
       { src: '/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js', body: true },
-      { src: '/dist/js/adminlte.js', body: true }
+      { src: '/dist/js/adminlte.js', body: true },
+      { src: '/plugins/toastr/toastr.min.js', body: true },
+      { src: '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js', body: true }
     ],
     bodyAttrs: {
       class: 'hold-transition sidebar-mini layout-fixed'
