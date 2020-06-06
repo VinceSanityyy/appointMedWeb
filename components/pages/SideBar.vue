@@ -54,6 +54,14 @@
               </p>
             </nuxt-link>
           </li>
+           <li class="nav-item">
+            <nuxt-link to="clinics" class="nav-link">
+              <i class="nav-icon fa fa-hospital" />
+              <p>
+                Clinics
+              </p>
+            </nuxt-link>
+          </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie" />
@@ -62,26 +70,6 @@
                 <i class="right fas fa-angle-left" />
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="far fa-circle nav-icon" />
-                  <p>ChartJS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon" />
-                  <p>Flot</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon" />
-                  <p>Inline</p>
-                </a>
-              </li>
-            </ul>
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
