@@ -34,18 +34,31 @@
                     <div class="card-header">
                         <button @click="addModal" class="btn btn-primary" style="float:right;">Add Doctor</button>
                     </div>
-                    <div class="card-body">
-                        <table id="myTable" class="table table-bordered table-responsive">
+                    <div class="card-body table-responsive">
+                        <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Doctor Name</th>
                                     <th>Address</th>
+                                    <th>Speciality</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(doctor,key) in doctors" :key="key">
                                     <td>{{doctor.name}}</td>
                                     <td>{{doctor.address}}</td>
+                                    <td>{{doctor.speciality}}</td>
+                                    <td>
+                                        &emsp;
+                                        <a href="#" >
+                                        <i class="fa fa-edit" @click="editModal(doctor,key)"></i>
+                                        </a>
+                                        &emsp;
+                                         <a href="#">
+                                        <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -60,12 +73,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Doctor</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form @submit.prevent = "addDoctor">
+            <form @submit.prevent = "editmode ? updateDoctor() : addDoctor()">
             <div class="modal-body">
                  <div class="form-group">
                         <label for="exampleInputEmail1">Doctor Name</label>
@@ -74,6 +87,14 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Address</label>
                         <input v-model="address" type="text" required class="form-control"  placeholder="Address">
+                    </div>
+                     <div class="form-group">
+                        <label for="exampleInputEmail1">Specialization</label>
+                        <v-select v-model="speciality"  :options="arr"></v-select>
+                    </div>
+                    <div class="form-group">
+                        <label >Picture</label>
+                        <input @change="onFileSelected" type="file" required class="form-control"  placeholder="Address">
                     </div>
             </div>
             <div class="modal-footer">
@@ -91,29 +112,44 @@
 <script>
 import * as firebase from 'firebase/app'
 import 'firebase/database'
-
+import 'firebase/storage'
 import Vue from 'vue'
 import toastr from 'admin-lte/plugins/toastr/toastr.min.js'
-// Vue.use(toastr)
-// window.toastr = require('toastr')
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+Vue.component('v-select', vSelect)
 Vue.use(Loading);
 export default {
     layout:'adminLte',
     data(){
         return{
             editmode:false,
+            key:'',
             name:'',
             address:'',
-            doctors:[]
+            doctors:[],
+            imageFile: null,
+            image:'',
+            specialist:[],
+            speciality:'',
+            arr:[]
+
         }
     },
     methods:{
         addModal(){
-            this.editMode = false
             // this.clearValues()
+            console.log('add Modal')
+            this.editmode = false
             $('#exampleModal').modal('show')
+            
+        },
+        onFileSelected(event){ 
+            console.log(event)
+            this.imageFile = event.target.files[0]
+            this.image = firebase.storage().ref('doctorImages/' + this.imageFile.name)
         },
          myTable(){
             $(document).ready( function () {
@@ -132,12 +168,15 @@ export default {
             })
             firebase.database().ref('doctors').push({
                 name: this.name,
-                address: this.address
+                address: this.address,
+                image: this.imageFile.name,
+                speciality: this.speciality
             }).then((res)=>{
                 console.log('successadd')
                 loader.hide()  
                 toastr.success('Added!')
                 $('#exampleModal').modal('hide')
+                this.image.put(this.imageFile)
             }).catch((err)=>{
                 console.log(err)
                 loader.hide()  
@@ -149,11 +188,51 @@ export default {
                 this.myTable()
                 console.log(snapshot.val())
             })
-        }
+        },
+        editModal(doctor, key){
+            this.editmode = true
+            console.log(key)
+            console.log(doctor)
+            this.name = doctor.name,
+            this.address = doctor.address
+            this.key = key
+            this.speciality = doctor.speciality
+            $('#exampleModal').modal('show')
+        },
+        updateDoctor(){
+            firebase.database().ref('doctors/' + this.key).set({
+                name: this.name,
+                address: this.address
+            }).then((res)=>{
+                console.log('updated')
+                toastr.success('Updated!')
+                $('#exampleModal').modal('hide')
+                this.editmode = false
+                // this.getDoctors()
+                this.clearValues()
+            })
+        },
+        clearValues(){
+            this.name=''
+            this.address=''
+            this.key=''
+            this.speciality = ''
+        },
+        getSpecialityList(){
+              firebase.database().ref('speciality').on('value',(snapshot)=>{
+                this.specialist = snapshot.val()
+                // console.log(snapshot.val())
+                snapshot.forEach(ss => {
+                    this.arr.push(ss.child('speciality').val());
+                });
+                console.log(this.arr);
+            })
+          
+        },
     },
     created(){
         this.getDoctors()
-        toastr.success('Added!')
+        this.getSpecialityList()
     }
 }
 </script>

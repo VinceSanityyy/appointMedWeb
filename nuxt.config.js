@@ -5,7 +5,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Appoint-Med',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -22,7 +22,9 @@ export default {
       { rel: 'stylesheet', href: '/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' },
       { rel: 'stylesheet', href: '/plugins/daterangepicker/daterangepicker.css' },
       { rel: 'stylesheet', href: '/plugins/summernote/summernote-bs4.css' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700' },
+      { rel: 'stylesheet', href: '/plugins/toastr/toastr.min.css'},
+      { rel: 'stylesheet', href: '/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'}
     ],
     script: [
       { src: '/plugins/jquery/jquery.min.js', body: true },
@@ -40,7 +42,9 @@ export default {
       { src: '/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js', body: true },
       { src: '/dist/js/adminlte.js', body: true },
       { src: '/plugins/toastr/toastr.min.js', body: true },
-      { src: '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js', body: true }
+      { src: '/plugins/datatables/jquery.dataTables.min.js', body: true },
+      { src: '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js', body: true },
+     
     ],
     bodyAttrs: {
       class: 'hold-transition sidebar-mini layout-fixed'
@@ -60,7 +64,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/firebase.js'
+    '~/plugins/firebase.js',
+    
   ],
   /*
   ** Nuxt.js dev-modules
