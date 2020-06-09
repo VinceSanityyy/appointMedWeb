@@ -54,13 +54,33 @@
               </p>
             </nuxt-link>
           </li>
-           <li class="nav-item">
-            <nuxt-link to="clinics" class="nav-link">
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fa fa-hospital" />
               <p>
                 Clinics
+                <i class="fas fa-angle-left right" />
               </p>
-            </nuxt-link>
+            </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+              <nuxt-link to="clinics" class="nav-link">
+                <p>
+                <i class="far fa-circle nav-icon" />
+                  Clinic List
+                </p>
+              </nuxt-link>
+             </li>
+            <li class="nav-item">
+              <nuxt-link to="addClinic" class="nav-link">
+                <p>
+                <i class="far fa-circle nav-icon" />
+                  Add Clinic
+                </p>
+              </nuxt-link>
+             </li>
+           </ul>
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -71,6 +91,7 @@
               </p>
             </a>
           </li>
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree" />
