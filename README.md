@@ -1,6 +1,6 @@
-# nuxtjs-adminlte-101
+# nuxtjs-Appoint-Web
 
-> Nuxt.js + AdminLTE
+> Nuxt.js project
 
 ## Build Setup
 
