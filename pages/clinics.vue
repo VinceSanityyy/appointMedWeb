@@ -84,6 +84,23 @@ export default {
                 }
 
             });
+
+
+            var infoWindow = new google.maps.InfoWindow(
+            );
+            infoWindow.open(map);
+
+            map.addListener('click', function(mapsMouseEvent) {
+            // Close the current InfoWindow.
+            infoWindow.close();
+
+            // Create a new InfoWindow.
+            infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
+            infoWindow.setContent(mapsMouseEvent.latLng.toString());
+            console.log(mapsMouseEvent.latLng.toString())
+            infoWindow.open(map);
+            });
+
             // other Markers
             // for (var i = 0; i < this.values.data.length; i++) {
             //     var coords = this.values.data[i].coord;
@@ -123,6 +140,9 @@ export default {
             script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCZS1-x2tYC7qwUoiCsy3pJdezTeo2O6xA&libraries=geometry";
             document.getElementsByTagName("head")[0].appendChild(script);
         },
+        getCoordinates(){
+
+        }
 
 
     },
