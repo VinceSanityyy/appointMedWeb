@@ -55,7 +55,9 @@ export default {
             address:{
                 lat:7.0650673,
                 lng:125.5961476
-            }
+            },
+            clickedLat:'',
+            clickedLng:'',
         }
     },
     methods:{
@@ -82,24 +84,17 @@ export default {
                 icon: {
                     url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
                 }
-
             });
+            let parent = this
+            const eventClicked = map.addListener('click', function(mapsMouseEvent) {
+                console.log(mapsMouseEvent.latLng.lat())
+                console.log(mapsMouseEvent.latLng.lng())
 
-
-            var infoWindow = new google.maps.InfoWindow(
-            );
-            infoWindow.open(map);
-
-            map.addListener('click', function(mapsMouseEvent) {
-            // Close the current InfoWindow.
-            infoWindow.close();
-
-            // Create a new InfoWindow.
-            infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
-            infoWindow.setContent(mapsMouseEvent.latLng.toString());
-            console.log(mapsMouseEvent.latLng.toString())
-            infoWindow.open(map);
+                parent.clickedLat = mapsMouseEvent.latLng.lat()
+                parent.clickedLng = mapsMouseEvent.latLng.lng()
+                
             });
+            
 
             // other Markers
             // for (var i = 0; i < this.values.data.length; i++) {
@@ -140,8 +135,8 @@ export default {
             script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCZS1-x2tYC7qwUoiCsy3pJdezTeo2O6xA&libraries=geometry";
             document.getElementsByTagName("head")[0].appendChild(script);
         },
-        getCoordinates(){
-
+        getCoordinates(lat,lng){
+            console.log('HELLO')
         }
 
 
