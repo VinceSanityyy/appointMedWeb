@@ -56,8 +56,10 @@ export default {
                 lat:7.0650673,
                 lng:125.5961476
             },
-            clickedLat:'',
-            clickedLng:'',
+            clickedEvent:{
+                lat:0,
+                lng:0
+            }
         }
     },
     methods:{
@@ -85,13 +87,25 @@ export default {
                     url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
                 }
             });
-            let parent = this
+
+
+            let parent = this;
+          
             const eventClicked = map.addListener('click', function(mapsMouseEvent) {
+              
                 console.log(mapsMouseEvent.latLng.lat())
                 console.log(mapsMouseEvent.latLng.lng())
+               
+                parent.clickedEvent.lat = mapsMouseEvent.latLng.lat()
+                parent.clickedEvent.lng = mapsMouseEvent.latLng.lng()
+                
+                var clickedMarker = new google.maps.Marker({
+                    position: parent.clickedEvent,
+                    title:"Hello World!"
+                });
+                console.log(parent.clickedEvent)
 
-                parent.clickedLat = mapsMouseEvent.latLng.lat()
-                parent.clickedLng = mapsMouseEvent.latLng.lng()
+                clickedMarker.setMap(map);
                 
             });
             
@@ -114,9 +128,10 @@ export default {
             //     this.infoWindowShow(markers, contentString);
             //     this.markersInfo.push(markers)
             // }
-              console.log("Here")
-              console.log(document.getElementById('map').offsetHeight)
-              console.log(document.getElementById('map').offsetWidth)
+
+            //   console.log("Here")
+            //   console.log(document.getElementById('map').offsetHeight)
+            //   console.log(document.getElementById('map').offsetWidth)
         },
         loadScript() {
             if (window.google && window.google.maps) {
