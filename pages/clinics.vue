@@ -158,9 +158,6 @@ export default {
     },
     mounted(){
         this.loadScript()
-    },
-    created(){
-        // this.initMap()
     }
 }
 </script>
