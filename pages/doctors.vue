@@ -38,6 +38,7 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th>Image</th>
                                     <th>Doctor Name</th>
                                     <th>Address</th>
                                     <th>Speciality</th>
@@ -46,6 +47,9 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(doctor,key) in doctors" :key="key">
+                                    <td>
+                                        <img :src=doctor.imageUrl height="42" width="42" class="img-rounded">
+                                    </td>
                                     <td>{{doctor.name}}</td>
                                     <td>{{doctor.address}}</td>
                                     <td>{{doctor.speciality}}</td>
@@ -134,7 +138,8 @@ export default {
             image:'',
             specialist:[],
             speciality:'',
-            arr:[]
+            arr:[],
+            imageUrl:''
 
         }
     },
@@ -150,6 +155,26 @@ export default {
             console.log(event)
             this.imageFile = event.target.files[0]
             this.image = firebase.storage().ref('doctorImages/' + this.imageFile.name)
+            this.upload = this.image.put(this.imageFile)
+            var self = this
+            self.upload.on('state_changed', function (snapshot) {
+              switch (snapshot.state) {
+                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                  console.log('Upload is paused');
+                  break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+                  console.log('Upload is running');
+                  var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  break;
+              }
+            }, function (error) {
+                console.log(error)
+            }, function () {
+              self.upload.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                console.log('File available at', downloadURL);
+                self.imageUrl = downloadURL;
+              });
+            });
         },
          myTable(){
             $(document).ready( function () {
@@ -170,7 +195,8 @@ export default {
                 name: this.name,
                 address: this.address,
                 image: this.imageFile.name,
-                speciality: this.speciality
+                speciality: this.speciality,
+                imgeUrl: this.imageUrl
             }).then((res)=>{
                 console.log('successadd')
                 loader.hide()  

@@ -65,14 +65,6 @@
             </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-              <nuxt-link to="clinics" class="nav-link">
-                <p>
-                <i class="far fa-circle nav-icon" />
-                  Clinic List
-                </p>
-              </nuxt-link>
-             </li>
-            <li class="nav-item">
               <nuxt-link to="addClinic" class="nav-link">
                 <p>
                 <i class="far fa-circle nav-icon" />
@@ -80,9 +72,17 @@
                 </p>
               </nuxt-link>
              </li>
+            <li class="nav-item">
+              <nuxt-link to="clinics" class="nav-link">
+                <p>
+                <i class="far fa-circle nav-icon" />
+                  Clinic List
+                </p>
+              </nuxt-link>
+             </li>
            </ul>
           </li>
-          <li class="nav-item has-treeview">
+          <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie" />
               <p>
@@ -496,7 +496,7 @@
               <i class="nav-icon far fa-circle text-info" />
               <p>Informational</p>
             </a>
-          </li>
+          </li> -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
