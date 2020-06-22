@@ -5,7 +5,7 @@
               <div class="row mb-2">
                   <div class="col-sm-6">
                       <h1 class="m-0 text-dark">
-                          Clinic Locations
+                          Add new Clinic
                       </h1>
                   </div>
                   <div class="col-sm-6">
@@ -14,7 +14,7 @@
                               <a href="">Home</a>
                           </li>
                           <li class="breadcrumb-item active">
-                              Speciality
+                              Add Clinic
                           </li>
                       </ol>
                   </div>
@@ -116,13 +116,13 @@ export default {
             //     radius: 3000,
             //     center: center
             // });
-            const marker = new google.maps.Marker({
-                position: this.address,
-                map: map,
-                icon: {
-                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                }
-            });
+            // const marker = new google.maps.Marker({
+            //     position: this.address,
+            //     map: map,
+            //     icon: {
+            //         url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            //     }
+            // });
 
 
             let parent = this;
@@ -185,9 +185,6 @@ export default {
             script.defer = true;
             script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCZS1-x2tYC7qwUoiCsy3pJdezTeo2O6xA&libraries=geometry";
             document.getElementsByTagName("head")[0].appendChild(script);
-        },
-        getCoordinates(lat,lng){
-            console.log('HELLO')
         },
          onFileSelected(event){ 
             console.log(event)
