@@ -32,8 +32,11 @@
                                 Clinic List
                             </h3>
                         </div>
-                        <div class="card-body table-responsive">
-
+                        <div class="card-body table-responsive" style="overflow-y: auto; height: 610px;">
+                            <div v-for="(clinics,index) in clinic" :key="index" class="callout callout-success">
+                                <h5>{{clinics.name}}</h5>
+                                <p>{{clinics.address}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,18 +96,19 @@ export default {
             document.getElementsByTagName("head")[0].appendChild(script);
         },
         initMap(){
+            
             var center = new google.maps.LatLng(this.address.lat, this.address.lng)
             const map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 13,
                 center: center
             })
-
-            // other Markers
+        
             for (var i = 0; i < this.clinic.length; i++) {
                 var clinicLat = this.clinic.data[i].lat;
                 var clinicLng = this.clinic.data[i].lng;
                 var details = this.clinic.data[i].name;
                 var latLng = new google.maps.LatLng(clinicLat,clinicLng);
+                console.log(details)
                 var markers = new google.maps.Marker({
                     position: latLng,
                     map: map,
@@ -119,6 +123,7 @@ export default {
                 this.infoWindowShow(markers, contentString);
                 this.markersInfo.push(markers)
             }
+      
         },
         infoWindowShow(markers, contentString) {
             var infowindow = new google.maps.InfoWindow({
@@ -142,18 +147,14 @@ export default {
     created(){
         console.log('created')
         this.getClinicsList()
-        if(this.isSignedIn == false){
-           this.$router.push('/login')
-       }
+        // this.mark()
+        if (localStorage.getItem("user-email") === null) {
+         this.$router.push('/login')
+        }
     },
     mounted(){
-        this.loadScript()
-    },
-     computed:{
-       isSignedIn(){
-           return  this.$store.state.authenticated;
-       }
-   }
+        // this.loadScript()
+    }
 }
 </script>
 

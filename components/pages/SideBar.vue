@@ -111,6 +111,7 @@ export default {
     firebaseSignOut(){
         firebase.auth().signOut().then(function() {
                 console.log('gawas')
+                localStorage.setItem('user-email',null)
             }).catch(function(error) {
                 console.log(error)
             })   

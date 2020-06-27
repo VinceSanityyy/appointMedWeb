@@ -71,10 +71,11 @@ export default {
             })
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(user => {
         loader.hide()  
-        this.$router.push('/')
-        this.$store.commit('changeAuthState',true);
-        // this.$store.commit('getUserDetails',user);
-        // console.log(user)
+        this.$router.push('/doctors')
+      //   this.$store.commit('changeAuthState',true);
+      //   this.$store.commit('getUserDetails',user);
+        console.log(user.user.email)
+        localStorage.setItem('user-email',user.user.email)
       }).catch((err) => {
         console.log(err)
       })

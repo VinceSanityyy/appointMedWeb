@@ -245,15 +245,15 @@ export default {
         this.loadScript()
     },
     created(){
-        if(this.isSignedIn == false){
-           this.$router.push('/login')
-       }
+       if (localStorage.getItem("user-email") === null) {
+         this.$router.push('/login')
+        }
     },
-     computed:{
-       isSignedIn(){
-           return  this.$store.state.authenticated;
-       }
-   }
+//      computed:{
+//        isSignedIn(){
+//            return  this.$store.state.authenticated;
+//        }
+//    }
 }
 </script>
 
