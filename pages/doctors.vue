@@ -259,7 +259,15 @@ export default {
     created(){
         this.getDoctors()
         this.getSpecialityList()
-    }
+        if(this.isSignedIn == false){
+           this.$router.push('/login')
+       }
+    },
+     computed:{
+       isSignedIn(){
+           return  this.$store.state.authenticated;
+       }
+   }
 }
 </script>
 

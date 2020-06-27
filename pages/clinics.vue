@@ -142,10 +142,18 @@ export default {
     created(){
         console.log('created')
         this.getClinicsList()
+        if(this.isSignedIn == false){
+           this.$router.push('/login')
+       }
     },
     mounted(){
         this.loadScript()
-    }
+    },
+     computed:{
+       isSignedIn(){
+           return  this.$store.state.authenticated;
+       }
+   }
 }
 </script>
 

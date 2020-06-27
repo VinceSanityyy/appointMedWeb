@@ -243,7 +243,17 @@ export default {
     },
     mounted(){
         this.loadScript()
-    }
+    },
+    created(){
+        if(this.isSignedIn == false){
+           this.$router.push('/login')
+       }
+    },
+     computed:{
+       isSignedIn(){
+           return  this.$store.state.authenticated;
+       }
+   }
 }
 </script>
 

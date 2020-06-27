@@ -1,15 +1,12 @@
-
-
 export const state = () => ({
-    clickedLat:'',
-    clickedLng:''
+  authenticated: false,
+  
 })
 
 export const mutations = {
-    changeLat(state, data) {
-      state.clickedLat = data;
-    },
-    changeLng(state,data){
-      state.clickedLng = data;
-    },
+  changeAuthState(state, data) {
+    state.authenticated = data;
+  },
 }
+
+
