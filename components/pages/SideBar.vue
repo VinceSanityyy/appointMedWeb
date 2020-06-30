@@ -55,6 +55,15 @@
             </nuxt-link>
           </li>
 
+           <li class="nav-item">
+            <nuxt-link to="secretaries" class="nav-link">
+              <i class="nav-icon fa fa-user" />
+              <p>
+                Secretaries
+              </p>
+            </nuxt-link>
+          </li>
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-hospital" />
