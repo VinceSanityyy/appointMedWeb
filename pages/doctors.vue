@@ -41,6 +41,7 @@
                                     <th>Image</th>
                                     <th>Doctor Name</th>
                                     <th>Address</th>
+                                    <th>Email</th>
                                     <th>Speciality</th>
                                     <th>Actions</th>
                                 </tr>
@@ -52,6 +53,7 @@
                                     </td>
                                     <td>{{doctor.name}}</td>
                                     <td>{{doctor.address}}</td>
+                                    <td>{{doctor.email}}</td>
                                     <td>{{doctor.speciality}}</td>
                                     <td>
                                         &emsp;
@@ -91,6 +93,10 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Address</label>
                         <input v-model="address" type="text" required class="form-control"  placeholder="Address">
+                    </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input v-model="email" type="email" required class="form-control"  placeholder="Email">
                     </div>
                      <div class="form-group">
                         <label for="exampleInputEmail1">Specialization</label>
@@ -139,7 +145,9 @@ export default {
             specialist:[],
             speciality:'',
             arr:[],
-            imageUrl:''
+            imageUrl:'',
+            defaultPass: 'appointmed',
+            email:''
 
         }
     },
@@ -196,12 +204,14 @@ export default {
                 address: this.address,
                 image: this.imageFile.name,
                 speciality: this.speciality,
-                imgeUrl: this.imageUrl
+                imgeUrl: this.imageUrl,
+                email: this.email
             }).then((res)=>{
                 console.log('successadd')
                 loader.hide()  
                 toastr.success('Added!')
                 $('#exampleModal').modal('hide')
+                this.createDoctorInAuth()
                 this.image.put(this.imageFile)
             }).catch((err)=>{
                 console.log(err)
@@ -222,6 +232,7 @@ export default {
             this.name = doctor.name,
             this.address = doctor.address
             this.key = key
+            this.email = doctor.email
             this.speciality = doctor.speciality
             $('#exampleModal').modal('show')
         },
@@ -243,6 +254,7 @@ export default {
             this.address=''
             this.key=''
             this.speciality = ''
+            this.email = ''
         },
         getSpecialityList(){
               firebase.database().ref('speciality').on('value',(snapshot)=>{
@@ -255,6 +267,13 @@ export default {
             })
           
         },
+        createDoctorInAuth(){
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.defaultPass).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log('Doctor Added in Auth Table')
+            });
+        }
     },
     created(){
         this.getDoctors()
