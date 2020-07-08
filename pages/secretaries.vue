@@ -91,6 +91,10 @@
                         <v-select v-model="doctor"  :options="arr"></v-select>
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input v-model="email" type="email" required class="form-control"  placeholder="Email">
+                    </div>
+                    <div class="form-group">
                         <label >Picture</label>
                         <input @change="onFileSelected" type="file" required class="form-control"  placeholder="Address">
                     </div>
@@ -132,7 +136,9 @@ export default {
             image:'',
             arr:[],
             imageUrl:'',
-            secretaries:[]
+            secretaries:[],
+            defaultPass: 'appointmedSecretary',
+            email:''
 
         }
     },
@@ -193,11 +199,19 @@ export default {
                 loader.hide()  
                 toastr.success('Added!')
                 $('#exampleModal').modal('hide')
+                this.createSecretaryInAuth()
                 this.image.put(this.imageFile)
             }).catch((err)=>{
                 console.log(err)
                 loader.hide()  
             })
+        },
+         createSecretaryInAuth(){
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.defaultPass).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log('Secretary Added in Auth Table')
+            });
         },
         getDoctors(){
             firebase.database().ref('doctors').on('value',(snapshot)=>{
