@@ -191,35 +191,10 @@ export default {
         },
         addDoctor(){
             console.log('hello doc')
-            let loader = this.$loading.show({
-                container: this.fullPage ? null : this.$refs.formContainer,
-                onCancel: this.onCancel,
-                color: '#c91010',
-                loader: 'bars',
-                width: 80,
-                height: 100,
-            })
-            firebase.database().ref('doctors').push({
-                name: this.name,
-                address: this.address,
-                image: this.imageFile.name,
-                speciality: this.speciality,
-                imgeUrl: this.imageUrl,
-                email: this.email
-            }).then((res)=>{
-                console.log('successadd')
-                loader.hide()  
-                toastr.success('Added!')
-                $('#exampleModal').modal('hide')
-                this.createDoctorInAuth()
-                this.image.put(this.imageFile)
-            }).catch((err)=>{
-                console.log(err)
-                loader.hide()  
-            })
+            this.createDoctorInAuth()
         },
         getDoctors(){
-            firebase.database().ref('doctors').on('value',(snapshot)=>{
+            firebase.database().ref('users/doctors').on('value',(snapshot)=>{
                 this.doctors = snapshot.val()
                 this.myTable()
                 console.log(snapshot.val())
@@ -237,9 +212,13 @@ export default {
             $('#exampleModal').modal('show')
         },
         updateDoctor(){
-            firebase.database().ref('doctors/' + this.key).set({
+            firebase.database().ref('users/doctors/' + this.key).set({
                 name: this.name,
-                address: this.address
+                address: this.address,
+                email: this.email,
+                uid: this.key,
+                speciality: this.speciality,
+                imageUrl: this.imageUrl
             }).then((res)=>{
                 console.log('updated')
                 toastr.success('Updated!')
@@ -268,10 +247,41 @@ export default {
           
         },
         createDoctorInAuth(){
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.defaultPass).catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log('Doctor Added in Auth Table')
+            let loader = this.$loading.show({
+                container: this.fullPage ? null : this.$refs.formContainer,
+                onCancel: this.onCancel,
+                color: '#c91010',
+                loader: 'bars',
+                width: 80,
+                height: 100,
+            })
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.defaultPass).then((res)=>{
+            console.log(res.user.uid)
+            loader.hide()  
+
+            firebase.database().ref('users/doctors/'+res.user.uid).set({
+                name: this.name,
+                address: this.address,
+                image: this.imageFile.name,
+                speciality: this.speciality,
+                imgeUrl: this.imageUrl,
+                email: this.email,
+                uid: res.user.uid,
+                type: 'doctor'
+            }).then((res)=>{
+                console.log('successadd')
+                loader.hide()  
+                toastr.success('Added!')
+                $('#exampleModal').modal('hide')
+                this.image.put(this.imageFile)
+            }).catch((err)=>{
+                console.log(err)
+                loader.hide()  
+            })
+            }).catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log('Doctor Added in Auth Table')
             });
         }
     },

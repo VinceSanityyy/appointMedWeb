@@ -181,7 +181,10 @@ export default {
             });
         },
         addSecretary(){
-            console.log('hello sec')
+            console.log('Trigger')
+            this.createSecretaryInAuth()
+        },
+         createSecretaryInAuth(){
             let loader = this.$loading.show({
                 container: this.fullPage ? null : this.$refs.formContainer,
                 onCancel: this.onCancel,
@@ -190,31 +193,28 @@ export default {
                 width: 80,
                 height: 100,
             })
-            firebase.database().ref('secretaries').push({
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.defaultPass).then((res)=>{
+                console.log(res.user.uid)
+                loader.hide()
+                console.log('Created in Auth')
+            firebase.database().ref('users/secretary/'+res.user.uid).set({
                 name: this.name,
                 doctor: this.doctor,
-                imgeUrl: this.imageUrl
+                imgeUrl: this.imageUrl,
+                email: this.email,
+                type: 'secretary',
+                uid: res.user.uid
             }).then((res)=>{
-                console.log('successadd')
+                console.log('Success')
                 loader.hide()  
                 toastr.success('Added!')
                 $('#exampleModal').modal('hide')
-                this.createSecretaryInAuth()
                 this.image.put(this.imageFile)
-            }).catch((err)=>{
-                console.log(err)
-                loader.hide()  
+            })
             })
         },
-         createSecretaryInAuth(){
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.defaultPass).catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log('Secretary Added in Auth Table')
-            });
-        },
         getDoctors(){
-            firebase.database().ref('doctors').on('value',(snapshot)=>{
+            firebase.database().ref('users/doctors').on('value',(snapshot)=>{
                  this.doctors = snapshot.val()
                 // console.log(snapshot.val())
                 snapshot.forEach(ss => {
@@ -230,13 +230,16 @@ export default {
             this.name = sec.name,
             this.doctor = sec.doctor
             this.key = key
+            this.email = sec.email
             $('#exampleModal').modal('show')
         },
         updateSecretary(){
-            firebase.database().ref('secretaries/' + this.key).set({
+            firebase.database().ref('users/secretary/' + this.key).set({
                 name: this.name,
                 doctor: this.doctor,
-                imgeUrl: this.imageUrl
+                imgeUrl: this.imageUrl,
+                email: this.email,
+                uid: this.key
             }).then((res)=>{
                 console.log('updated')
                 toastr.success('Updated!')
@@ -246,7 +249,7 @@ export default {
             })
         },
         getSecretaries(){
-             firebase.database().ref('secretaries').on('value',(snapshot)=>{
+             firebase.database().ref('users/secretary').on('value',(snapshot)=>{
                 this.secretaries = snapshot.val()
                 this.myTable()
                 console.log(snapshot.val())
