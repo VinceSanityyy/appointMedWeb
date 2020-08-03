@@ -194,7 +194,7 @@ export default {
             this.createDoctorInAuth()
         },
         getDoctors(){
-            firebase.database().ref('users/doctors').on('value',(snapshot)=>{
+            firebase.database().ref('users').orderByChild('type').equalTo('doctor').on('value',(snapshot)=>{
                 this.doctors = snapshot.val()
                 this.myTable()
                 console.log(snapshot.val())
@@ -212,13 +212,14 @@ export default {
             $('#exampleModal').modal('show')
         },
         updateDoctor(){
-            firebase.database().ref('users/doctors/' + this.key).set({
+            firebase.database().ref('users/' + this.key).set({
                 name: this.name,
                 address: this.address,
                 email: this.email,
                 uid: this.key,
                 speciality: this.speciality,
-                imageUrl: this.imageUrl
+                imageUrl: this.imageUrl,
+                type: 'doctor'
             }).then((res)=>{
                 console.log('updated')
                 toastr.success('Updated!')
@@ -259,7 +260,7 @@ export default {
             console.log(res.user.uid)
             loader.hide()  
 
-            firebase.database().ref('users/doctors/'+res.user.uid).set({
+            firebase.database().ref('users/'+res.user.uid).set({
                 name: this.name,
                 address: this.address,
                 image: this.imageFile.name,

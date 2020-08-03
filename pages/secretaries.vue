@@ -6,7 +6,7 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">
-              Doctors
+              Secretaries
             </h1>
           </div>
           <!-- /.col -->
@@ -16,7 +16,7 @@
                 <a href="#">Home</a>
               </li>
               <li class="breadcrumb-item active">
-                Doctors
+                Secretaries
               </li>
             </ol>
           </div>
@@ -32,7 +32,7 @@
             <div class="col-md-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <button @click="addModal" class="btn btn-primary" style="float:right;">Add Doctor</button>
+                        <button @click="addModal" class="btn btn-primary" style="float:right;">Add Secretary</button>
                     </div>
                     <div class="card-body table-responsive">
                         <table id="myTable" class="table table-bordered table-striped">
@@ -75,7 +75,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Doctor</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Secretary</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -197,7 +197,7 @@ export default {
                 console.log(res.user.uid)
                 loader.hide()
                 console.log('Created in Auth')
-            firebase.database().ref('users/secretary/'+res.user.uid).set({
+            firebase.database().ref('users/'+res.user.uid).set({
                 name: this.name,
                 doctor: this.doctor,
                 imgeUrl: this.imageUrl,
@@ -214,7 +214,7 @@ export default {
             })
         },
         getDoctors(){
-            firebase.database().ref('users/doctors').on('value',(snapshot)=>{
+            firebase.database().ref('users').orderByChild('type').equalTo('doctor').on('value',(snapshot)=>{
                  this.doctors = snapshot.val()
                 // console.log(snapshot.val())
                 snapshot.forEach(ss => {
@@ -234,12 +234,13 @@ export default {
             $('#exampleModal').modal('show')
         },
         updateSecretary(){
-            firebase.database().ref('users/secretary/' + this.key).set({
+            firebase.database().ref('users/' + this.key).set({
                 name: this.name,
                 doctor: this.doctor,
                 imgeUrl: this.imageUrl,
                 email: this.email,
-                uid: this.key
+                uid: this.key,
+                type: 'secretary'
             }).then((res)=>{
                 console.log('updated')
                 toastr.success('Updated!')
@@ -249,7 +250,7 @@ export default {
             })
         },
         getSecretaries(){
-             firebase.database().ref('users/secretary').on('value',(snapshot)=>{
+             firebase.database().ref('users').orderByChild('type').equalTo('secretary').on('value',(snapshot)=>{
                 this.secretaries = snapshot.val()
                 this.myTable()
                 console.log(snapshot.val())
